@@ -1,1 +1,15 @@
 https://stackoverflow.com/questions/6630873/how-to-download-python-from-command-line
+
+
+install git on linux
+sudo apt-get install git
+
+
+
+
+
+https://stackoverflow.com/questions/3103178/how-to-get-the-system-info-with-python
+ 
+http://www.pyinstaller.org/
+
+https://github.com/giampaolo/psutil
