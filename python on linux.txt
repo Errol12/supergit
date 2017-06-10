@@ -1,5 +1,5 @@
 https://stackoverflow.com/questions/6630873/how-to-download-python-from-command-line
-
+https://passingcuriosity.com/2015/installing-python-from-source/
 
 install git on linux
 sudo apt-get install git
