@@ -107,13 +107,26 @@ data={
 				   'with subnet mask ':subnet,
 				   'with hostmask ':hostmask
 				   
-	}
+	},
+	'Network_2 ':[
+	
+	]
 }
 
 i = 1
 for disk_partition in disk_partitions:
 	data["Storage "]['Disks'].append({"Disk"+str(i):disk_partition+psutil.disk_usage(disk_partition[1])})
 	i=i+1
+
+
+network_names = []
+for system_network in system_networks:
+	print(system_networks)
+	network_names.append(system_network)
+	
+	
+
+data["Network_2 "].append({"Network":system_networks})
 #data["Storage "]['Disks'].append({"f":var})
 #data["Storage "]['Disks'].append({"q":var})
 #data["Storage "]["No of Partitions "]["Disks"].append({"f":var})
@@ -123,8 +136,26 @@ json=json.dumps(data,sort_keys=True)
 #print(json)
 #print('CPU Freq',psutil.cpu_freq())
 print(processor)
+ser = psutil.net_if_addrs()
+i=0	
+for system_network in system_networks:
+	data["Network_2 "].append({"Network"+str(i):system_networks[network_names[i]]})
+	i = i+1
+
+#for name, stats in psutil.net_if_stats().items():
+    #print(name, stats.speed)
+
+#print(psutil.net_if_stats().items())
+a = []
+for nic, addrs in psutil.net_if_addrs().items():
+	print(nic)
+	for addr in addrs:
+	 if addr.family == socket.AF_INET:
+	  print(addr.address)
+	  print(addr.netmask)
+
 #print(psutil.disk_usage(disk_partition[1]))
-f=open('systeminfo2','w')
+f=open('systeminfo3','w')
 #print(json,file=f)
 f.write(json)
 f.close()
