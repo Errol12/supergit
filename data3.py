@@ -5,6 +5,7 @@ import socket
 import os
 import subprocess
 import re
+import ipaddress
 
 system_network_count = 0
 disk_partition_count = 0
@@ -63,6 +64,27 @@ elif platform.system() == "Linux":
             if "model name" in line:
                 processor = re.sub( ".*model name.*:", "", line,1)
 
+if platform.system() == "Windows":
+	net = ipaddress.ip_network(s)
+elif platform.system() == "Linux":
+	v = s.decode('utf-8')
+	net = ipaddress.ip_network(v)
+
+
+#net = ipaddress.ip_network(s)
+print(net)
+print('is private:', net.is_private)
+print('ipaddress:', net.broadcast_address)
+print('compressed:', net.compressed)
+print('with subnet mask:', net.with_netmask)
+print('with hostmask:', net.with_hostmask)
+print('num addresses:', net.num_addresses)
+is_private = net.is_private
+ipaddr = str(net.broadcast_address)
+compressed = net.compressed
+subnet = net.with_netmask
+hostmask = net.with_hostmask
+
 
 data={
 	'Name ':platform.uname()[1],
@@ -77,6 +99,14 @@ data={
 				  'Disks':[],
 
 		          'Total Memory ':psutil.virtual_memory()[0]
+	},
+	'Network ':{
+				   'ipaddress ':ipaddr,
+				   'is_private ':is_private,
+				   'compressed ':compressed, 
+				   'with subnet mask ':subnet,
+				   'with hostmask ':hostmask
+				   
 	}
 }
 
