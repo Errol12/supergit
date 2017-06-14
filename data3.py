@@ -4,6 +4,7 @@ import psutil
 import socket
 import os
 import subprocess
+import re
 
 system_network_count = 0
 disk_partition_count = 0
