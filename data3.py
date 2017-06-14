@@ -56,7 +56,6 @@ data={
 	'Processor ':platform.processor(),
 	'Architecture ':platform.machine(),
 	'No of CPU Cores ':psutil.cpu_count(logical=False),
-	'Clockspeed ':psutil.cpu_freq()[2],
 	'Storage ':{	
 				  'No of Partitions ':disk_partition_count,
 
