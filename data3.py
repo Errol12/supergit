@@ -2,7 +2,7 @@ import json
 import platform
 import psutil
 import socket
-import ipaddress
+
 
 system_network_count = 0
 disk_partition_count = 0
@@ -10,7 +10,7 @@ system_ip_network_count = 0
 i=1
 # example dictionary that contains data like you want to have in json
 # dic={'platform': platform.platform(), 'name': 'mkyong.com', 'messages': ['msg 1', 'msg 2', 'msg 3']}
-data = {'platform':platform.platform(),'attributes':[{'machine':platform.machine(),'processor':platform.processor(),'disk_partition':psutil.disk_partitions()}]}
+#data = {'platform':platform.platform(),'attributes':[{'machine':platform.machine(),'processor':platform.processor(),'disk_partition':psutil.disk_partitions()}]}
 # get json string from that dictionary
 disk_partitions = psutil.disk_partitions(all=True)
 for disk_partition in disk_partitions:
@@ -46,19 +46,6 @@ print('')
 print('Network')
 
 s =  socket.gethostbyname(socket.gethostname())
-net = ipaddress.ip_network(s)
-print(net)
-print('is private:', net.is_private)
-print('ipaddress:', net.broadcast_address)
-print('compressed:', net.compressed)
-print('with subnet mask:', net.with_netmask)
-print('with hostmask:', net.with_hostmask)
-print('num addresses:', net.num_addresses)
-is_private = net.is_private
-ipaddr = str(net.broadcast_address)
-compressed = net.compressed
-subnet = net.with_netmask
-hostmask = net.with_hostmask
 
 
 
@@ -76,14 +63,6 @@ data={
 				  'Disks':[],
 
 		          'Total Memory ':psutil.virtual_memory()[0]
-	},
-	'Network ':{
-				   'ipaddress ':ipaddr,
-				   'is_private ':is_private,
-				   'compressed ':compressed, 
-				   'with subnet mask ':subnet,
-				   'with hostmask ':hostmask
-				   
 	}
 }
 
@@ -99,7 +78,7 @@ json=json.dumps(data,sort_keys=True)
 #data = json.dumps(data,sort_keys=True)
 print(json)
 print(psutil.disk_usage(disk_partition[1]))
-f=open('sysinfo3','w')
+f=open('sysinfo1','w')
 #print(json,file=f)
 f.write(json)
 f.close()
