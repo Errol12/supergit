@@ -25,6 +25,7 @@ for system_ip_network in system_ip_networks:
 	system_ip_network_count = system_ip_network_count + 1
 
 #platform.platform()
+
 print('Descriptions')
 print('Name :',platform.uname()[1])
 print('Fully Qualified Domain Name :',socket.getfqdn())
@@ -75,8 +76,9 @@ for disk_partition in disk_partitions:
 #jsobj["a"]["b"]["e"].append({"f":var3, "g":var4, "h":var5})
 json=json.dumps(data,sort_keys=True)
 #data = json.dumps(data,sort_keys=True)
-print(json)
-print(psutil.disk_usage(disk_partition[1]))
+#print(json)
+print('CPU Freq',psutil.cpu_freq())
+#print(psutil.disk_usage(disk_partition[1]))
 f=open('sysinfo1','w')
 #print(json,file=f)
 f.write(json)
