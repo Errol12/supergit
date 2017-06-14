@@ -2,7 +2,8 @@ import json
 import platform
 import psutil
 import socket
-
+import os
+import subprocess
 
 system_network_count = 0
 disk_partition_count = 0
@@ -48,13 +49,25 @@ print('Network')
 
 s =  socket.gethostbyname(socket.gethostname())
 
+if platform.system() == "Windows":
+        processor = platform.processor()
+elif platform.system() == "Darwin":
+        os.environ['PATH'] = os.environ['PATH'] + os.pathsep + '/usr/sbin'
+        command ="sysctl -n machdep.cpu.brand_string"
+        processor = subprocess.check_output(command).strip()
+elif platform.system() == "Linux":
+        command = "cat /proc/cpuinfo"
+        all_info = subprocess.check_output(command, shell=True).strip()
+        for line in all_info.split("\n"):
+            if "model name" in line:
+                processor = re.sub( ".*model name.*:", "", line,1)
 
 
 data={
 	'Name ':platform.uname()[1],
 	'Fully Qualified Domain Name ':socket.getfqdn(),
 	'Operating System ':platform.platform(),
-	'Processor ':platform.processor(),
+	'Processor ':processor,
 	'Architecture ':platform.machine(),
 	'No of CPU Cores ':psutil.cpu_count(logical=False),
 	'Storage ':{	
