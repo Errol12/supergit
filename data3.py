@@ -107,6 +107,9 @@ data={
 
 		          'Total Memory ':psutil.virtual_memory()[0]
 	},
+	'Storage_2':{
+
+	},
 	'Network ':[
 
 				   
@@ -139,6 +142,19 @@ for nic, addrs in psutil.net_if_addrs().items():
 
 
 
+j=1
+for disk_partition in disk_partitions:
+	data['Storage_2'].update({"Disk"+str(j):[]})
+	j = j + 1
+
+bList = [2009, 'manni'];
+
+j=1
+for device in psutil.disk_partitions(all=True):
+	#data["Storage_2"]['Disk'+str(j)].extend({"Disk"+str(j):disk_partition,"Disk2":psutil.disk_usage(disk_partition[1])})
+	data["Storage_2"]['Disk'+str(j)].append({'Device': device.device,'Mountpoint':device.mountpoint,'fstype':device.fstype,'opts':device.opts})
+	j = j + 1
+
 
 
 #data["Network_2 "].append({"Network":system_networks})
@@ -152,8 +168,9 @@ json=json.dumps(data,sort_keys=True,indent=4)
 #print('CPU Freq',psutil.cpu_freq())
 print(processor)
 
-#for device in psutil.disk_partitions(all=True):
-	#print(device.device)
+for device in psutil.disk_partitions(all=True):
+	print(device.device)
+
 	#data["Storage "]['Disks']['Disk1'].extend({"Device":device.device}) 
 		#print(dev)
 
@@ -161,7 +178,7 @@ print(processor)
     #print(name, stats.speed)
 
 #print(psutil.net_if_stats().items())
-
+print(json)
 #print(psutil.disk_usage(disk_partition[1]))
 f=open('systeminfo3','w')
 #print(json,file=f)
