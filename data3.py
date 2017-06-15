@@ -52,7 +52,11 @@ print('Network')
 s =  socket.gethostbyname(socket.gethostname())
 
 if platform.system() == "Windows":
-        processor = platform.processor()
+        #processor = platform.processor()
+        command = "wmic CPU get name"
+        processor1 = subprocess.check_output(command, shell=True).strip()
+        processor = str(processor1).split('\\n')
+        processor = processor[1].replace("'", "")
 elif platform.system() == "Darwin":
         os.environ['PATH'] = os.environ['PATH'] + os.pathsep + '/usr/sbin'
         command ="sysctl -n machdep.cpu.brand_string"
@@ -85,6 +89,9 @@ compressed = net.compressed
 subnet = net.with_netmask
 hostmask = net.with_hostmask
 
+a = []
+
+
 
 data={
 	'Name ':platform.uname()[1],
@@ -100,16 +107,10 @@ data={
 
 		          'Total Memory ':psutil.virtual_memory()[0]
 	},
-	'Network ':{
-				   'ipaddress ':ipaddr,
-				   'is_private ':is_private,
-				   'compressed ':compressed, 
-				   'with subnet mask ':subnet,
-				   'with hostmask ':hostmask
+	'Network ':[
+
 				   
-	},
-	'Network_2 ':[
-	
+				   
 	]
 }
 
@@ -123,36 +124,43 @@ network_names = []
 for system_network in system_networks:
 	print(system_networks)
 	network_names.append(system_network)
-	
-	
 
-data["Network_2 "].append({"Network":system_networks})
+i=1		
+for nic, addrs in psutil.net_if_addrs().items():
+	#data["Network_2 "].append({"Network 1":nic})
+	print(nic)
+	name = nic
+	for addr in addrs:
+	 if addr.family == socket.AF_INET:
+	  #print(addr.address)
+	  #print(addr.netmask)
+	  data["Network "].append({"Network "+str(i):nic,"Ipaddress":addr.address , "Subaddress":addr.netmask})
+	  i = i + 1
+
+
+
+
+
+#data["Network_2 "].append({"Network":system_networks})
 #data["Storage "]['Disks'].append({"f":var})
 #data["Storage "]['Disks'].append({"q":var})
 #data["Storage "]["No of Partitions "]["Disks"].append({"f":var})
 #jsobj["a"]["b"]["e"].append({"f":var3, "g":var4, "h":var5})
-json=json.dumps(data,sort_keys=True)
+json=json.dumps(data,sort_keys=True,indent=4)
 #data = json.dumps(data,sort_keys=True)
 #print(json)
 #print('CPU Freq',psutil.cpu_freq())
 print(processor)
-ser = psutil.net_if_addrs()
-i=0	
-for system_network in system_networks:
-	data["Network_2 "].append({"Network"+str(i):system_networks[network_names[i]]})
-	i = i+1
+
+#for device in psutil.disk_partitions(all=True):
+	#print(device.device)
+	#data["Storage "]['Disks']['Disk1'].extend({"Device":device.device}) 
+		#print(dev)
 
 #for name, stats in psutil.net_if_stats().items():
     #print(name, stats.speed)
 
 #print(psutil.net_if_stats().items())
-a = []
-for nic, addrs in psutil.net_if_addrs().items():
-	print(nic)
-	for addr in addrs:
-	 if addr.family == socket.AF_INET:
-	  print(addr.address)
-	  print(addr.netmask)
 
 #print(psutil.disk_usage(disk_partition[1]))
 f=open('systeminfo3','w')
