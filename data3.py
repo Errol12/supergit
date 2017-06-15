@@ -134,14 +134,14 @@ for nic, addrs in psutil.net_if_addrs().items():
 	 if addr.family == socket.AF_INET:
 	  #print(addr.address)
 	  #print(addr.netmask)
-	  data["Network"].append({"Network"+str(i):nic,"Ipaddress":addr.address , "Subaddress":addr.netmask})
+	  data["Network"].append({"Network "+str(i):nic,"Ipaddress":addr.address , "Subaddress":addr.netmask})
 	  i = i + 1
 
 
 
 j=1
 for disk_partition in disk_partitions:
-	data['Storage'].update({"Disk"+str(j):[]})
+	data['Storage'].update({"Disk "+str(j):[]})
 	j = j + 1
 
 
@@ -149,7 +149,7 @@ for disk_partition in disk_partitions:
 j=1
 for device in psutil.disk_partitions(all=True):
 	#data["Storage_2"]['Disk'+str(j)].extend({"Disk"+str(j):disk_partition,"Disk2":psutil.disk_usage(disk_partition[1])})
-	data["Storage"]['Disk'+str(j)].append({'Device': device.device,'Mountpoint':device.mountpoint,'fstype':device.fstype,'opts':device.opts,'total_memory':psutil.disk_usage(device.mountpoint)[0],'used_memory':psutil.disk_usage(device.mountpoint)[1],'free_memory':psutil.disk_usage(device.mountpoint)[2],'percent':psutil.disk_usage(device.mountpoint)[3]})
+	data["Storage"]['Disk '+str(j)].append({'Device': device.device,'Mountpoint':device.mountpoint,'fstype':device.fstype,'opts':device.opts,'total_memory':psutil.disk_usage(device.mountpoint)[0],'used_memory':psutil.disk_usage(device.mountpoint)[1],'free_memory':psutil.disk_usage(device.mountpoint)[2],'percent':psutil.disk_usage(device.mountpoint)[3]})
 	j = j + 1
 
 
