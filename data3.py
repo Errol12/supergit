@@ -105,7 +105,7 @@ data={
 
 				  
 
-		          'Total Memory ':psutil.virtual_memory()[0]
+		          'System Memory ':psutil.virtual_memory()[0]
 	},
 	'Network ':[
 
