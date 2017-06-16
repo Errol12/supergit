@@ -6,6 +6,7 @@ import os
 import subprocess
 import re
 import ipaddress
+import sys
 
 system_network_count = 0
 disk_partition_count = 0
@@ -94,6 +95,7 @@ a = []
 
 
 data={
+	'UID':str(sys.argv[1]),
 	'Name':platform.uname()[1],
 	'Fully Qualified Domain Name':socket.getfqdn(),
 	'Operating System':platform.platform(),
@@ -180,6 +182,8 @@ print(json)
 
 
 print(psutil.disk_usage('/')[0])
+
+print("this is ",str(sys.argv[1]))
 #print(psutil.disk_usage(disk_partition[1]))
 
 f=open('acat_'+platform.system()+'.info','w')
