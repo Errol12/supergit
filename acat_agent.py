@@ -7,6 +7,7 @@ import subprocess
 import re
 import ipaddress
 import sys
+import netifaces as nif
 
 system_network_count = 0
 disk_partition_count = 0
@@ -16,6 +17,27 @@ i=1
 # dic={'platform': platform.platform(), 'name': 'mkyong.com', 'messages': ['msg 1', 'msg 2', 'msg 3']}
 #data = {'platform':platform.platform(),'attributes':[{'machine':platform.machine(),'processor':platform.processor(),'disk_partition':psutil.disk_partitions()}]}
 # get json string from that dictionary
+
+
+if len(sys.argv) < 2:
+    print('You failed to provide Client unique key as input') 
+    sys.exit(1)  # abort because of error
+
+
+def mac_for_ip(ip):
+    'Returns a list of MACs for interfaces that have given IP, returns None if not found'
+    for i in nif.interfaces():
+        addrs = nif.ifaddresses(i)
+        try:
+            if_mac = addrs[nif.AF_LINK][0]['addr']
+            if_ip = addrs[nif.AF_INET][0]['addr']
+        except IndexError: #ignore ifaces that dont have MAC or IP
+            if_mac = if_ip = None
+        if if_ip == ip:
+            return if_mac
+    return 'None'
+
+
 disk_partitions = psutil.disk_partitions(all=True)
 for disk_partition in disk_partitions:
 	disk_partition_count = disk_partition_count + 1
@@ -103,13 +125,11 @@ data={
 	'Platform':platform.system(),
 	'Architecture':platform.machine(),
 	'No of CPU Cores':psutil.cpu_count(logical=False),
+	'System Memory':psutil.virtual_memory()[0],
 	'Storage':{	
-				  'No of Partitions':disk_partition_count,
+				  'No of Partitions':disk_partition_count
 
-				  
-
-		          'System Memory':psutil.virtual_memory()[0]
-	},
+			},
 	'Network':[
 
 				   
@@ -135,10 +155,13 @@ for nic, addrs in psutil.net_if_addrs().items():
 	name = nic
 	for addr in addrs:
 	 if addr.family == socket.AF_INET:
-	  #print(addr.address)
-	  #print(addr.netmask)
-	  data["Network"].append({"Network"+str(i):nic,"Ipaddress":addr.address , "Subaddress":addr.netmask})
+	  if mac_for_ip(addr.address):
+	  	macaddr = mac_for_ip(addr.address)
+	  else:
+	  	macaddr = 'NA'	
+	  data["Network"].append({"Network"+str(i):nic,"Ipaddress":addr.address ,"Subaddress":addr.netmask,"Macaddress":macaddr})
 	  i = i + 1
+
 
 
 
@@ -178,7 +201,7 @@ for device in psutil.disk_partitions(all=True):
     #print(name, stats.speed)
 
 #print(psutil.net_if_stats().items())
-print(json)
+
 
 
 print(psutil.disk_usage('/')[0])
@@ -186,7 +209,17 @@ print(psutil.disk_usage('/')[0])
 print("this is ",str(sys.argv[1]))
 #print(psutil.disk_usage(disk_partition[1]))
 
-f=open('acat_'+platform.system()+'.info','w')
+f=open('acat_'+platform.system()+'.json','w')
 #print(json,file=f)
 f.write(json)
 f.close()
+print(json)
+
+
+
+
+
+
+
+
+
