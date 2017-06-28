@@ -1,7 +1,9 @@
-{
+{   
+    "Acat-agent Version Id": "V1.0",
     "Architecture": "x86_64", 
-    "Fully Qualified Domain Name": "ubuntu", 
+    "Fully Qualified Domain Name": "ubuntu.Acat-agent.net", 
     "Name": "ubuntu", 
+    "Location": "Mumbai",
     "Network": [
         {
             "Ipaddress": "127.0.0.1", 
@@ -204,5 +206,5 @@
         "No of Partitions": 15
     }, 
     "System Memory": 2098409472, 
-    "UID": "21aaq33"
+    "UID": "594b73c999843"
 }
