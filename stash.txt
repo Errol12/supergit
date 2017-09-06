@@ -1,0 +1,3 @@
+https://stash.fsc.atos-services.net/projects
+
+https://atosgit.peoplestrong.com/DefaultLogin.jsf 
